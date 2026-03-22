@@ -1,1 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSYCH Performance Review Board</title>
+  <style>
+    :root {
+      --bg1: #0f172a;
+      --bg2: #1e293b;
+      --card: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --gold: #fbbf24;
+      --red: #f87171;
+      --green: #4ade80;
+      --blue: #38bdf8;
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, #1d4ed8 0%, transparent 30%),
+        radial-gradient(circle at top right, #7c3aed 0%, transparent 25%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 20px 18px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 14px;
+      background: linear-gradient(90deg, #facc15, #f59e0b);
+      color: #111827;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      margin-top: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .card h2, .card h3 {
+      margin-top: 0;
+    }
+
+    .expert-name {
+      font-size: 34px;
+      color: var(--gold);
+      font-weight: 800;
+      margin: 8px 0 6px;
+    }
+
+    .expert-sub {
+      color: var(--green);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .stat strong {
+      color: var(--blue);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .alert {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(248, 113, 113, 0.15);
+      border: 1px solid rgba(248, 113, 113, 0.4);
+      color: #fee2e2;
+      font-weight: 700;
+    }
+
+    .leaderboard {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .leaderboard th,
+    .leaderboard td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .leaderboard th {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .leaderboard tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rank-1 {
+      color: var(--gold);
+      font-weight: 800;
+    }
+
+    .rank-4 {
+      color: var(--red);
+      font-weight: 800;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #e2e8f0;
+      line-height: 1.7;
+      background: rgba(255,255,255,0.05);
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 14px;
+    }
+
+    .btn-row {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .primary {
+      background: linear-gradient(90deg, #facc15, #f59e0b);
+      color: #111827;
+    }
+
+    .danger {
+      background: linear-gradient(90deg, #fb7185, #ef4444);
+      color: white;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 28px;
+      font-size: 13px;
+      line-height: 1.6;
+      padding-bottom: 24px;
+    }
+
+    .blink {
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+
+    .stamp {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 8px 12px;
+      border: 2px dashed rgba(255,255,255,0.35);
+      border-radius: 10px;
+      color: #fecaca;
+      font-weight: 800;
+      transform: rotate(-6deg);
+    }
+
+    .pill {
+      display: inline-block;
+      margin: 6px 8px 0 0;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>🧠 PSYCH Performance Review Board</h1>
+      <p>
+        Independent findings from a deeply serious and definitely unbiased review
+        of recent PSYCH performances.
+      </p>
+      <div class="badge">Official Competitive Intelligence Report</div>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🏆 Certified Expert</h2>
+        <div class="expert-name">TAWHA</div>
+        <div class="expert-sub">PSYCH Expert • Elite Guess Merchant • Mind Games Consultant</div>
+
+        <p>
+          After extensive observation, the board has concluded that Tawha has shown
+          outstanding tactical deception, strong bluff recognition, and a level of
+          PSYCH excellence that others can currently only admire from a distance.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>Status</strong>
+            Undisputed PSYCH authority
+          </div>
+          <div class="stat">
+            <strong>Specialization</strong>
+            Reading weak lies and punishing bad guesses
+          </div>
+          <div class="stat">
+            <strong>Recommended Role</strong>
+            Head Coach, Mentor, and Occasional Emotional Support
+          </div>
+        </div>
+
+        <div class="stamp">APPROVED BY THE BOARD</div>
+      </div>
+
+      <div class="card">
+        <h2>📉 Urgent Development Case</h2>
+        <h3 class="blink">Usman</h3>
+        <p>
+          The board regrets to confirm that Usman finished
+          <strong>4th in every single game</strong>, which is not a statistic,
+          but a pattern. At this point, it is no longer “a bad day.”
+          It is a documentary.
+        </p>
+
+        <div class="alert">
+          Performance risk level: Severe but still recoverable with immediate intervention.
+        </div>
+
+        <div style="margin-top:14px;">
+          <span class="pill">Repeated 4th-place landings</span>
+          <span class="pill">Low bluff resistance</span>
+          <span class="pill">Answer judgement under review</span>
+          <span class="pill">Potential confidence collapse</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>📊 Final Standings</h2>
+        <table class="leaderboard">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rank-1">#1</td>
+              <td><strong>Tawha</strong></td>
+              <td>Operating on a different intellectual plane</td>
+            </tr>
+            <tr>
+              <td>#2</td>
+              <td>Dr. Abdi</td>
+              <td>Respected scholar of deception sciences</td>
+            </tr>
+            <tr>
+              <td>#3</td>
+              <td>The Others</td>
+              <td>Trying their best and surviving</td>
+            </tr>
+            <tr>
+              <td class="rank-4">#4</td>
+              <td><strong>Usman</strong></td>
+              <td>Committed to consistency, unfortunately in the wrong direction</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>🎓 Recommended Recovery Plan</h2>
+        <p>
+          We strongly encourage Usman to begin structured PSYCH coaching before
+          further public damage occurs.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>Primary Coach</strong>
+            Tawha
+          </div>
+          <div class="stat">
+            <strong>Visiting Faculty</strong>
+            Dr. Abdi
+          </div>
+          <div class="stat">
+            <strong>Program Focus</strong>
+            Identifying obvious traps, lying with dignity, and finishing above 4th
+          </div>
+        </div>
+
+        <div class="quote">
+          “There is no shame in seeking help. The shame is finishing 4th every time and pretending it is part of a strategy.”
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" onclick="bookSession()">Book Emergency Coaching</button>
+          <button class="danger" onclick="runDiagnosis()">Run Performance Diagnosis</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h2>📝 Official Board Statement</h2>
+      <p>
+        The PSYCH Performance Review Board officially recognizes <strong>Tawha</strong>
+        as the current PSYCH expert of the group.
+      </p>
+      <p>
+        The board further recommends that <strong>Usman</strong> immediately enroll
+        in coaching sessions with Tawha or Dr. Abdi due to his recent string of
+        deeply disappointing, statistically impressive, and spiritually confusing results.
+      </p>
+      <p>
+        Let it be known that support is available, recovery is possible, and 4th place
+        does not have to become an identity.
+      </p>
+    </div>
+
+    <div class="footer">
+      Powered by PSYCH Analytics™<br>
+      Excellence recognized. Weakness documented.
+    </div>
+  </div>
+
+  <script>
+    function bookSession() {
+      alert("✅ Coaching session requested.\n\nNext available slot:\nAs soon as Usman accepts reality.");
+    }
+
+    function runDiagnosis() {
+      const messages = [
+        "Diagnosis complete: chronic 4th-place syndrome detected.",
+        "Analysis complete: bluff recognition system not responding.",
+        "Emergency finding: confidence exceeded ability.",
+        "Recommendation: immediate coaching with Tawha.",
+        "Scan result: severe vulnerability to obvious fake answers."
+      ];
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      alert("🧪 Performance Diagnosis\n\n" + randomMessage);
+    }
+  </script>
+</body>
+</html>
